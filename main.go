@@ -33,5 +33,5 @@ func main() {
 
 	app := internal.App{Message: cfg.Message}
 
-	http.ListenAndServe(":80", app)
+	http.ListenAndServe(":8080", app)
 }
