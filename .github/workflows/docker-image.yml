@@ -2,18 +2,36 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - 'main'
+    tags:
+      - 'v*'
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - 'main'
 
 jobs:
-
-  build:
-
+  build-and-push:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
+
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v4
+      with:
+        # list of Docker images to use as base name for tags
+        images: grepory/demo-helm-chart-app
+        # generate Docker tags based on the following events/attributes
+        tags: |
+          type=schedule
+          type=ref,event=branch
+          type=ref,event=pr
+          type=semver,pattern={{version}}
+          type=semver,pattern={{major}}.{{minor}}
+          type=semver,pattern={{major}}
+          type=sha
+
     - name: Docker Hub login
       uses: docker/login-action@v2
       with:
@@ -23,6 +41,5 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
-        push: true
+        push: ${{ github.event_name != 'pull_request' }}
         tags: grepory/demon-helm-chart-app:0.1.0
-
