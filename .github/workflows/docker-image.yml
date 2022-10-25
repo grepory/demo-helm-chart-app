@@ -42,4 +42,4 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: ${{ github.event_name != 'pull_request' }}
-        tags: grepory/demon-helm-chart-app:0.1.0
+        tags: grepory/demo-helm-chart-app:0.1.0
