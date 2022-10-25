@@ -41,5 +41,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v3
       with:
+        context: .
         push: ${{ github.event_name != 'pull_request' }}
-        tags: grepory/demo-helm-chart-app:0.1.0
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
